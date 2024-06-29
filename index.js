@@ -43,16 +43,33 @@ app.route("/api/users/:id")
 }).patch((req,res) => {
     //TODO: Edit the use with id
     const body = req.body;
-    const id = req.params.id;
-    const user = users.find((user) => {
-        return user.id===id;
-    })
-    console.log(user);
+    const id = Number(req.params.id);
+    const userIndex = users.findIndex((user) => user.id===id);
 
-    return res.send({"status" : "pending"});
+    if(userIndex === -1) {
+        return res.status(404).json({"message" : "user not found"});
+    }
+
+    users[userIndex] = Object.assign({},users[userIndex],body);
+    
+    fs.writeFile("./MOCK_DATA.json", JSON.stringify(users) ,(err,data) => {
+        return res.json({"status" : "user updated successfully" , ...users[userIndex]});
+    })
+    
 }).delete((req,res)=> {
     //TODO: delete usern with id
-    return res.send({"status" : "pending"});
+    const body = req.body;
+    const id = Number(req.params.id);
+    const userIndex = users.findIndex((user)=>user.id===id);
+
+    if(userIndex === -1) {
+        return res.status(404).json({"message" : "user not found"});
+    }
+
+    users.splice(userIndex,1);
+    fs.writeFile("./MOCK_DATA.json", JSON.stringify(users) ,(err,data) => {
+        return res.json({"status" : "user deleted successfully"});
+    })
 })
 
 
