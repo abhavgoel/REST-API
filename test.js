@@ -1,9 +1,13 @@
-const data = {
-    "id": 3,
-    "first_name": "Brannon",
-    "last_name": "Barthorpe",
-    "email": "bbarthorpe2@livejournal.com",
-    "gender": "Male",
-    "job_title": "Electrical Engineer"
-};
-console.log({...data});
+async function f() {
+    setTimeout(() => {
+        console.log("async");
+    },2000);
+    
+    console.log("before await");
+    const x = await f;
+    console.log("after await");
+    return x;
+}
+const a = f();
+console.log(a);
+console.log("sync");
