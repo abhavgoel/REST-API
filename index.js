@@ -9,11 +9,14 @@ const PORT  = 3000;
 
 //middleware
 app.use(express.urlencoded({extended:false}));
-
-connectMongoDb("mongodb://127.0.0.1:27017/CRUD_practice_db");
-
 app.use(logReqRes("serverlog.txt"));
-app.use("/users", userRouter);
+
+
+//connection
+connectMongoDb("mongodb://127.0.0.1:27017/CRUD_practice_db").then(() => console.log("MongoDB connected!"));
+
+//routes
+app.use("/api/users", userRouter);
 
 app.listen(PORT,function() {
     console.log("Server started at PORT " + PORT);
